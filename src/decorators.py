@@ -1,5 +1,5 @@
 from functools import wraps
-from scipy import load, save
+from scipy.sparse import load_npz, save_npz
 from os import makedirs
 from os.path import isfile
 import time
@@ -9,12 +9,12 @@ def cache(name):
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
-            path = "./cache/%s.npy" % name
+            path = "./cache/%s.npz" % name
             if isfile(path):
-                return load(path)
+                return load_npz(path)
             makedirs("./cache", exist_ok=True)
             value = func(*args, **kwargs)
-            save(path, value)
+            save_npz(path, value)
             return value
         return wrapper
     return decorator
