@@ -1,5 +1,5 @@
 from functools import wraps
-from numpy import load, save
+from scipy import load, save
 from os import makedirs
 from os.path import isfile
 import time
