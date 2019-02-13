@@ -11,3 +11,7 @@ Install the required dependencies:
 Run the application:
 
 `./run` or `python3 src/main.py`
+
+If required, the cache can be cleared using:
+
+`./clear` or `rm -rf ./cache`
