@@ -1,0 +1,46 @@
+standardized ratings -> Only usefull if applying cosine/spearman (linear)
+ratings -> can easily be used to determine spearman/kendall (ranking)
+
+normalized similarities (makes the matching step more logical (max weight with non-negative weights))
+
+library		algorithm			notes
+
+scipy		kendalltau			Used to compute non-linear (ranked) similarity between users
+scipy		pearsonr			Used to compute linear similarity between users
+networkx	blossom algorithm	Used for max weight matching of users based on similarity
+
+standardize ratings to reduce user-bias (optimist vs. pessimist).
+choose pearson over cosine since it only considers values rated by both users.
+kendalltau(-b) over spearman since it 'better' handles ties in rankings.
+
+normalize similarities [0, 1] to make them non-negative (make better weights for matching).
+
+the blossom algorithm to find max weight matching in graph of users with their similarity as weight on the edges connecting possible pairs.
+
+If an uneven number of students, the remaining student is added to the pair with a pair such that the total similarity is largest.
+
+Try multiple lower-thresholds on similarity while adding edges to graph. Finding the highest lower-thresholds maximizes the minimum similarity between any pair in the matching.
+
+
+leeuw vanha 0.665
+Leeuw brugg 0.698
+miche ruijs 0.731
+fokke mulde 0.610
+zaidi elhaji 0.701
+Kappe rhebe 0.761
+arend lagew 0.835
+vdijk yuuuu 0.898
+lutzz voogt 0.865
+Vries roelv 0.817
+jaggi volke 0.666
+angey dorre 0.638
+bergg kokkk 0.808
+Groen abder 0.731
+tariq heijb 0.824
+Abrah piepe 0.670
+posne BROUW 0.662
+moole Moone 0.667
+angeg bouma 0.689
+jelen weegi 0.659
+tahur Bihar 1.000
+Lange tersm 0.608
