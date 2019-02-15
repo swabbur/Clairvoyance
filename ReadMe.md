@@ -4,14 +4,22 @@ A simple Collaborative Filtering application written in Python.
 
 ### Instructions
 
+Create a virtual environment:
+
+`python3 -m venv ./venv`
+
+Activate the virtual environment:
+
+`source ./venv/bin/activate`
+
 Install the required dependencies:
 
-`./install` or `pip install -r requirements.txt`
+`pip install -r requirements.txt`
 
 Run the application:
 
-`./run` or `python3 src/main.py`
+`python3 src/main.py`
 
-If required, the cache can be cleared using:
+Clear the cache if required:
 
-`./clear` or `rm -rf ./cache`
+`rm -rf ./cache`
