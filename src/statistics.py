@@ -2,12 +2,6 @@ import scipy as sp
 import scipy.stats.stats as scipy_stats
 
 
-def standardize(vector):
-    mean = sp.nanmean(vector)
-    standard_deviation = sp.nanstd(vector)
-    return sp.divide(sp.subtract(vector, mean), standard_deviation)
-
-
 def normalize(vector):
     minimum = sp.nanmin(vector)
     maximum = sp.nanmax(vector)

@@ -1,13 +1,5 @@
-import scipy as sp
 import statistics as st
 import networkx as nx
-
-
-def standardize_ratings(ratings):
-    standardized_ratings = sp.empty(ratings.shape)
-    for index, row in enumerate(ratings):
-        standardized_ratings[index] = st.standardize(row)
-    return standardized_ratings
 
 
 def generate_pairs(n):

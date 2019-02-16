@@ -6,14 +6,12 @@ import statistics as st
 (identifiers, ratings) = pr.from_csv("./res/flavor_ratings.csv")
 (user_count, item_count) = ratings.shape
 
-standardized_ratings = op.standardize_ratings(ratings)
 pairs = op.generate_pairs(user_count)
 measures = [st.pearson_r, st.kendall_tau_b]
 
-similarities = op.compute_similarities(standardized_ratings, pairs, measures)
+similarities = op.compute_similarities(ratings, pairs, measures)
 
-threshold = 0.608
-matching = op.match_pairs(pairs, similarities, threshold)
+matching = op.match_pairs(pairs, similarities, 0.608)
 
 for match in matching:
     identifier_1 = identifiers[match[0][0]]
