@@ -1,9 +1,9 @@
 import operations as op
-import parsers as pr
+import parsers as ps
 import statistics as st
 
 
-(identifiers, ratings) = pr.from_csv("./res/flavor_ratings.csv")
+(identifiers, ratings) = ps.from_csv("./res/flavor_ratings.csv")
 (user_count, item_count) = ratings.shape
 
 measures = [st.pearson_r, st.kendall_tau_b]
