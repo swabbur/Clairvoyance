@@ -55,19 +55,16 @@ def match_pairs(user_count, pairs, similarities, threshold=0.5):
 
         maximum_similarity = 0
         maximum_index = 0
-        for index, (pair, similarity_1) in enumerate(matching):
+        for index, match in enumerate(matching):
 
-            if pair[0] < unmatched_user:
-                similarity_2 = similarity_map[(pair[0], unmatched_user)]
-            else:
-                similarity_2 = similarity_map[(unmatched_user, pair[0])]
+            selection = match[0] + [unmatched_user]
+            selection.sort()
 
-            if pair[1] < unmatched_user:
-                similarity_3 = similarity_map[(pair[1], unmatched_user)]
-            else:
-                similarity_3 = similarity_map[(unmatched_user, pair[1])]
-
-            average_similarity = (similarity_1 + similarity_2 + similarity_3) / 3
+            average_similarity = (
+                similarity_map[(selection[0], selection[1])]
+                + similarity_map[(selection[0], selection[2])]
+                + similarity_map[(selection[1], selection[2])]
+            ) / 3
 
             if average_similarity > maximum_similarity:
                 maximum_similarity = average_similarity
@@ -76,3 +73,23 @@ def match_pairs(user_count, pairs, similarities, threshold=0.5):
         matching[maximum_index] = (matching[maximum_index][0] + [unmatched_user], maximum_similarity)
 
     return matching
+
+
+def print_matching(matching, identifiers):
+
+    matching.sort(key=lambda m: -m[1])
+
+    for index, match in enumerate(matching):
+
+        names = []
+        for i in match[0]:
+            names.append(identifiers[i])
+
+        similarity = match[1]
+
+        suffix_size = int(6 / len(names))
+        group_name = ""
+        for name in names:
+            group_name += name[-suffix_size:]
+
+        print("%i.\t%s\t%.2f\t(%s)" % (index + 1, group_name, similarity * 2 - 1, ", ".join(names)))
