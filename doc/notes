@@ -20,27 +20,3 @@ the blossom algorithm to find max weight matching in graph of users with their s
 If an uneven number of students, the remaining student is added to the pair with a pair such that the total similarity is largest.
 
 Try multiple lower-thresholds on similarity while adding edges to graph. Finding the highest lower-thresholds maximizes the minimum similarity between any pair in the matching.
-
-
-leeuw vanha 0.665
-Leeuw brugg 0.698
-miche ruijs 0.731
-fokke mulde 0.610
-zaidi elhaji 0.701
-Kappe rhebe 0.761
-arend lagew 0.835
-vdijk yuuuu 0.898
-lutzz voogt 0.865
-Vries roelv 0.817
-jaggi volke 0.666
-angey dorre 0.638
-bergg kokkk 0.808
-Groen abder 0.731
-tariq heijb 0.824
-Abrah piepe 0.670
-posne BROUW 0.662
-moole Moone 0.667
-angeg bouma 0.689
-jelen weegi 0.659
-tahur Bihar 1.000
-Lange tersm 0.608
