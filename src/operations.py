@@ -92,4 +92,4 @@ def print_matching(matching, identifiers):
         for name in names:
             group_name += name[-suffix_size:]
 
-        print("%i.\t%s\t%.2f\t(%s)" % (index + 1, group_name, similarity * 2 - 1, ", ".join(names)))
+        print("%i.\t%s\t%.2f\t(%s)" % (index + 1, group_name, similarity, ", ".join(names)))
