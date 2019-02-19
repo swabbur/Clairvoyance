@@ -1,6 +1,6 @@
 ### Clairvoyance
 
-A simple Collaborative Filtering application written in Python.
+A simple pairing application written in Python.
 
 ### Instructions
 
