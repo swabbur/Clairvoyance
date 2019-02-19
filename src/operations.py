@@ -1,4 +1,5 @@
 import networkx as nx
+import scipy as sp
 import statistics as st
 
 
@@ -6,68 +7,64 @@ def generate_pairs(n):
     return [(i, j) for i in range(n) for j in range(i + 1, n)]
 
 
-def compute_similarities(ratings, pairs, measures):
+def compute_similarities(ratings, pairs, measures, weights):
 
-    similarities = []
+    user_count = len(ratings)
 
-    for measure in measures:
-        sub_similarities = []
-        for (i, j) in pairs:
-            similarity = measure(ratings[i], ratings[j])
-            sub_similarities.append(similarity)
-        similarities.append(sub_similarities)
+    similarities = sp.empty((user_count, user_count))
+    similarities[:] = sp.nan
 
-    for index in range(len(similarities)):
+    for (i, j) in pairs:
+        measurements = [measure(ratings[i], ratings[j]) for measure in measures]
+        similarity = sp.dot(measurements, weights) / sp.sum(weights)
+        similarities[i][j] = similarity
+        similarities[j][i] = similarity
+
+    for index in range(user_count):
         similarities[index] = st.normalize(similarities[index])
 
-    averaged_similarities = []
-    for index in range(len(pairs)):
-        total = 0
-        for similarity in similarities:
-            total += similarity[index]
-        averaged_similarities.append(total / len(similarities))
-
-    return averaged_similarities
+    return similarities
 
 
-def match_pairs(user_count, pairs, similarities, threshold=0.5):
+def match_pairs(user_count, pairs, similarities, threshold):
 
     graph = nx.Graph()
-    for (i, j), similarity in zip(pairs, similarities):
-        if similarity > threshold:
+    for (i, j) in pairs:
+        if similarities[i][j] > threshold and similarities[j][i] > threshold:
+            similarity = (similarities[i][j] + similarities[j][i]) / 2
             graph.add_edge(i, j, weight=similarity)
+
     graph_matching = nx.algorithms.matching.max_weight_matching(graph, True)
 
     matching = []
-    for match in graph_matching:
-        i = match[0]
-        j = match[1]
-        similarity = graph[i][j]["weight"]
+    for (i, j) in graph_matching:
+        similarity = min(similarities[i][j], similarities[j][i])
         matching.append(([i, j], similarity))
 
     if user_count & 1:
 
         users = set(range(user_count))
-        matched_users = {user for (pair, similarity) in matching for user in pair}
+        matched_users = {user for (pair, _) in matching for user in pair}
         unmatched_user = (users - matched_users).pop()
-
-        similarity_map = {pair: similarity for (pair, similarity) in zip(pairs, similarities)}
 
         maximum_similarity = 0
         maximum_index = 0
+
         for index, match in enumerate(matching):
 
-            selection = match[0] + [unmatched_user]
-            selection.sort()
+            selection = sorted(match[0] + [unmatched_user])
 
-            average_similarity = (
-                similarity_map[(selection[0], selection[1])]
-                + similarity_map[(selection[0], selection[2])]
-                + similarity_map[(selection[1], selection[2])]
-            ) / 3
+            similarity = (
+                similarities[selection[0]][selection[1]]
+                + similarities[selection[1]][selection[0]]
+                + similarities[selection[0]][selection[2]]
+                + similarities[selection[2]][selection[0]]
+                + similarities[selection[1]][selection[2]]
+                + similarities[selection[2]][selection[1]]
+            ) / 6
 
-            if average_similarity > maximum_similarity:
-                maximum_similarity = average_similarity
+            if similarity > maximum_similarity:
+                maximum_similarity = similarity
                 maximum_index = index
 
         matching[maximum_index] = (matching[maximum_index][0] + [unmatched_user], maximum_similarity)
@@ -79,6 +76,7 @@ def print_matching(matching, identifiers):
 
     matching.sort(key=lambda m: -m[1])
 
+    result = ""
     for index, match in enumerate(matching):
 
         names = []
@@ -92,4 +90,6 @@ def print_matching(matching, identifiers):
         for name in names:
             group_name += name[-suffix_size:]
 
-        print("%i.\t%s\t%.2f\t(%s)" % (index + 1, group_name, similarity, ", ".join(names)))
+        result += "%i.\t%s\t%.2f\t(%s)\n" % (index + 1, group_name, similarity, ", ".join(names))
+
+    return result
