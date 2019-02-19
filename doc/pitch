@@ -1,9 +1,5 @@
-combined pearson (r) and kendall (tau-b) to evaluate the similarity between users both linearly and based on rank.
-Using kendall's tau (b) instead of spearman since kendall's should handle ties better. Which is especially important
-since the scale is such that the ranking indeed contains many ties. Also, neither pearson or kendall requires normalized
-or standardized data. Which makes the process a little simpler.After determining the similarity between users, the
-blossom algorithm is used to find the maximum matching within an undirected graph. To make sure everyone is matched with
-an acceptable partner, a threshold is used such that edges won't be added if their weight (similarity) is lower than a
-set threshold (0.6 by default). If an odd number of users is entered. The matching will be made and afterwards, the
-remaining user will be added to a pair such that it yields the largest possible average similarity of the three users.
-(Or should it by placed such that the total similarity is maximised)
+I've chosen to use a linear combination of two similarity measures to increase reliability. The chosen measures are pearson's r and kendall's tau (b). Kendall's tau is based on ranking, similar to spearman's rho. However, it has a special case for handling ties.
+
+Next, I decided to build an undirected graph of users. Only connecting those that have a similarity larger than a predetermined threshold. This ensures that everyone is matched to someone who is at least a little like him or her.
+
+At last, the blossom algorithm is performed on the graph to find a max-weight matching. This step maximizes the average similarity for all users while retaining the lower-threshold defined in the previous step.
