@@ -2,6 +2,8 @@
 
 A simple pairing application written in Python.
 
+My pitch can be found in the `doc` folder.
+
 ### Instructions
 
 Create a virtual environment:
@@ -20,6 +22,4 @@ Run the application:
 
 `python3 src/main.py`
 
-Clear the cache if required:
-
-`rm -rf ./cache`
+Results are written to the `res` folder.
